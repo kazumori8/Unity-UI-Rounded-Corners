@@ -67,13 +67,16 @@ namespace Nobi.UiRoundedCorners {
 			}
 		}
 
-		public void Refresh() {
-			var rect = ((RectTransform)transform).rect;
+        public void Refresh() {
+            var rect = ((RectTransform)transform).rect;
+            var scale = ((RectTransform)transform).localScale;
+            float minDimension = Mathf.Min(rect.width, rect.height);
+            float minScale = Mathf.Min(scale.x, scale.y);
+            float actualRadius = Mathf.Min(radius * 2, minDimension * minScale);
 
-			//Multiply radius value by 2 to make the radius value appear consistent with ImageWithIndependentRoundedCorners script.
-			//Right now, the ImageWithIndependentRoundedCorners appears to have double the radius than this.
-			material.SetVector(Props, new Vector4(rect.width, rect.height, radius * 2, 0));
-			material.SetVector(prop_OuterUV, outerUV);
-		}
+            material.SetVector(Props, new Vector4(rect.width, rect.height, actualRadius, 0));
+            material.SetVector(prop_OuterUV, outerUV);
+        }
+
 	}
 }
